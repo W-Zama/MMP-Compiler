@@ -40,19 +40,22 @@ compiler.output_file("sample.obj");
 ```
 
 ## ディレクトリ構成
+- **sample/**: サンプルプログラムのディレクトリ
+    - **sample1.pas**: サンプルプログラム1
+    - **sample2.pas**: サンプルプログラム2
+    - **︙**
+    - **sample1.obj**: サンプルプログラム1の出力オブジェクトファイル
+    - **sample2.obj**: サンプルプログラム2の出力オブジェクトファイル
+    - **︙**
 - **command.cpp**: `Commandクラス`のソースファイル
 - **command.hpp**: `Commandクラス`のヘッダファイル
 - **compiler.cpp**: `Compilerクラス`のソースファイル
 - **compiler.hpp**: `Compilerクラス`のヘッダファイル
-- **main.cpp**: main関数のソースファイル
-- **sample/**: サンプルプログラムのディレクトリ
-    - **output/**: サンプルプログラムの出力ディレクトリ
-        - **sample1.obj**: サンプルプログラム1の出力オブジェクトファイル
-        - **sample2.obj**: サンプルプログラム2の出力オブジェクトファイル
-        - **︙**
-    - **sample1.pas**: サンプルプログラム1
-    - **sample2.pas**: サンプルプログラム2
-    - **︙**
+- **example.cpp**: `Compilerクラスのメソッドを使ったコンパイルの例`
+- **example.sh**: `example.cppのコンパイルと実行用のシェルスクリプト`
+- **mmpc**: `mmpc(mini-mini pascal compiler)の実行ファイル`
+- **mmpc.cpp**: `mmpc実行ファイルのソースファイル`
+- **mmpc.sh**: `mmpc.cppのコンパイル用のシェルスクリプト`
 
 ## 誤り処理一覧
 | 誤り内容 | メッセージ |
