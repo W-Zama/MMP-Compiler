@@ -72,4 +72,9 @@ compiler.output_file("sample.obj");
 | 関係式がの演算子が`=`か`>`か`<`の何でもない | `関係式が正しくありません．` |
 | 符号なし定数が0から始まっている | `定数が0から始まっています．` |
 
-<!-- ## 誤り表示 -->
+## 誤り表示
+誤りが検出された場合，以下の画像のようにエラーメッセージとエラー該当箇所が赤背景になった文字列が表示されます．
+
+<br>
+<img src="https://github.com/W-Zama/figure/blob/main/README_images/mmpascal_compiler/error_display.png" alt="誤り表示" width=60%>
+<br>
