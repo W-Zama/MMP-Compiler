@@ -342,7 +342,7 @@ void Compiler::unsigned_constant(void) {
     string sb = "";
     bool first_call = true;
     while (isdigit(*cursor)) {
-        if (first_call && *cursor == '0') {
+        if (first_call && *cursor == '0' && isdigit(*(cursor+1))) {
             syntax_error("定数が0から始まっています．");
         }
         if (first_call) {
@@ -351,7 +351,16 @@ void Compiler::unsigned_constant(void) {
         sb.push_back(*cursor);
         cursor++;
     }
-    obj.push_back(Command(LDC, stoi(sb)));
+
+    int constant;
+    try {
+        constant = stoi(sb);    // string型からint型への変換
+
+    } catch (const out_of_range& e) {
+        syntax_error("定数が大きすぎます．");
+    }
+
+    obj.push_back(Command(LDC, constant));
 }
 
 // 空白文字と改行コードの読み飛ばし
@@ -363,12 +372,18 @@ void Compiler::skip(void) {
 
 // 構文エラー
 void Compiler::syntax_error(string message) {
-    cerr << "構文エラー: " << message << endl;
-    for (char* c = &str[0]; c != &str.back(); c++) {
-        if (c == cursor) {
-            cerr << "\033[1;41m" << *c << "\033[m";
-        } else {
-            cerr << *c;
+    cerr << "構文エラー: ";
+    // カーソルがstrの最後を指している場合
+    if (*cursor == '\0') {
+        cerr << "プログラムの終わりが正しくありません．";
+    } else {
+        cout << message << endl;
+        for (char* c = &str[0]; c != &str.back(); c++) {
+            if (c == cursor) {  // カーソルがエラー箇所のとき
+                cerr << "\033[1;41m" << *c << "\033[m"; // カーソルの文字の背景を赤く表示
+            } else {
+                cerr << *c;
+            }
         }
     }
     cerr << endl;
