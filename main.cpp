@@ -5,24 +5,84 @@
 
 using namespace std;
 
-int main()
+void command_error(string message) {
+    cerr << message << endl;
+    cerr << "詳しくは-hまたは--helpを参照してください．" << endl;
+    exit(1);
+}
+
+int main(int argc, char* argv[])
 {
-    // インスタンス生成
-    Compiler compiler;
+    if (argc < 2) {
+        command_error("mmpc [オプション（必須）] [ファイルのパス1 ファイルのパス2, ...] の形式で実行してください．");
+    }
 
-    // プログラムの文字列またはファイルのセット
-    string filename = "sample";
-    // compiler.set_program_string("READ(L); A:=0; K:=1; WHILE K < L+1 DO A:=A+K;K:=K+1ENDWHILE;WRITE(A).");
-    compiler.set_program_file("sample/" + filename + ".pas");
+    // 結果の出力オプションのフラグ
+    bool output_to_console = false;
+    bool output_to_file = false;
 
-    // コンパイル
-    compiler.compile();
+    for (int i = 1; i < argc; i++) {
+        // i番目の引数を取得
+        string filename = argv[i];
 
-    // 結果の表示
-    compiler.print_result();
+        if (i == 1) {
+            if (filename == "-c") { // -cオプションの場合
+                output_to_console = true;   // コンソールに出力する
+                continue;
+            } else if (filename == "-f") {  // -fオプションの場合
+                output_to_file = true;  // ファイルに出力する
+                continue;
+            } else if (filename == "-cf" || filename == "-fc") {    // -fcまたは-cfオプションの場合
+                // 両方に出力する
+                output_to_file = true;    // ファイルに出力する
+                output_to_console = true;    // コンソールに出力する
+            } else if (filename == "-h" || filename == "--help") {  // -hまたは--helpオプションの場合
+                cout << "mmpc [オプション（必須）] [ファイルのパス1 ファイルのパス2, ...] の形式で実行してください．" << endl;
+                cout << endl;
+                cout << "オプション一覧" << endl;
+                cout << "-c: コンパイル結果をコンソールに出力する" << endl;
+                cout << "-f: コンパイル結果をファイルに出力する" << endl;
+                cout << "-cfまたは-fc: コンパイル結果をコンソールとファイルに出力する" << endl;
+                cout << "-hまたは--help: ヘルプを表示する" << endl;
+                cout << endl;
+                cout << "また，ファイルのパスには拡張子を含めてください．" << endl;
+                return 0;
+            }
+            else {
+                command_error("オプションを正しく指定してください．");
+            }
+        }
 
-    // ファイルに結果を出力
-    compiler.output_file("sample/output/" + filename + ".obj");
+        // 拡張子を取り除いたファイルのパスを取得
+        size_t dot_index = filename.find_last_of("."); // 最後のドットの位置を取得
+        string basename;
+        if (dot_index != string::npos) {
+            basename = filename.substr(0, dot_index); // ドットより前の部分
+        } else {
+            command_error("拡張子付きファイルを指定してください");
+        }
+
+        // インスタンス生成
+        Compiler compiler;
+
+        // プログラムの文字列またはファイルのセット
+        compiler.set_program_file(filename);
+
+        // コンパイル
+        compiler.compile();
+
+        // 結果の表示
+        if (output_to_console) {
+            cout << filename << "のコンパイル結果(" << basename << ".obj)" << endl;
+            compiler.print_result();
+            cout << "----------------------------------------" << endl;
+        }
+
+        // ファイルに結果を出力
+        if (output_to_file) {
+            compiler.output_file(basename + ".obj");
+        }
+    }
 
     return 0;
 }
