@@ -1,0 +1,1 @@
+g++ -o mmpc mmpc.cpp compiler.cpp command.cpp && ./mmpc
