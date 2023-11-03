@@ -1,0 +1,1 @@
+g++ -o example example.cpp compiler.cpp command.cpp && ./example
