@@ -1,0 +1,3 @@
+READ(A);
+A:= A+01;
+WRITE(A).

@@ -1,0 +1,6 @@
+GET 0
+LOD 0
+LDC 10
+ADD
+STR 0
+PUT 0

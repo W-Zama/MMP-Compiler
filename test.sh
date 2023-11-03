@@ -1,0 +1,1 @@
+g++ -o main main.cpp compiler.cpp command.cpp && ./main
