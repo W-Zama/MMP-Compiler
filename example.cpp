@@ -21,7 +21,7 @@ int main()
     compiler.print_result();
 
     // ファイルに結果を出力
-    compiler.output_file(filename + ".obj");
+    // compiler.output_file(filename + ".obj");
 
     return 0;
 }

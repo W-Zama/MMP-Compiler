@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <map>
 
 #include "Command.hpp"
 
@@ -14,7 +13,6 @@ private:
     string str;
     char* cursor;
     vector<Command> obj;
-    static map<int, string> mnemonic2string_map;
 
     void program(void);
     void statement(void);

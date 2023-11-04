@@ -391,31 +391,13 @@ void Compiler::syntax_error(string message) {
     exit(1);
 }
 
-// ニモニックの列挙型と文字列の対応表
-map<int, string> Compiler::mnemonic2string_map = {
-    {GET, "GET"},
-    {PUT, "PUT"},
-    {LOD, "LOD"},
-    {LDC, "LDC"},
-    {STR, "STR"},
-    {ADD, "ADD"},
-    {SUB, "SUB"},
-    {MLT, "MLT"},
-    {DIV, "DIV"},
-    {EQL, "EQL"},
-    {GRT, "GRT"},
-    {LET, "LET"},
-    {CJP, "CJP"},
-    {UJP, "UJP"},
-};
-
 // 結果の表示
 void Compiler::print_result(void) {
     for (auto i : obj) {
         if (i.operand.has_value()) {
-            cout << Compiler::mnemonic2string_map[i.mnemonic] << ' ' << i.operand.value() << endl;
+            cout << Command::mnemonic2string_map[i.mnemonic] << ' ' << i.operand.value() << endl;
         } else {
-            cout << Compiler::mnemonic2string_map[i.mnemonic] << endl;
+            cout << Command::mnemonic2string_map[i.mnemonic] << endl;
         }
     }
 }
@@ -429,9 +411,9 @@ void Compiler::output_file(string filename) {
         // 結果の出力
         for (auto i : obj) {
             if (i.operand.has_value()) {
-                file << Compiler::mnemonic2string_map[i.mnemonic] << ' ' << i.operand.value() << endl;
+                file << Command::mnemonic2string_map[i.mnemonic] << ' ' << i.operand.value() << endl;
             } else {
-                file << Compiler::mnemonic2string_map[i.mnemonic] << endl;
+                file << Command::mnemonic2string_map[i.mnemonic] << endl;
             }
         }
 
