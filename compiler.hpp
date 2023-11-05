@@ -35,7 +35,7 @@ public:
     void compile(void);
     void print_result(void);
     void output_file(string filename);
-
+    vector<Command> get_obj(void);
 };
 
 #endif // _COMPILER_HPP_

@@ -212,9 +212,16 @@ bool Compiler::parse_while_do(void) {
     skip(); // WHILE文の後に空白が複数ある場合の処理
 
     // 関係式の解析時点のプログラムカウンタの保存（UJPのオペランドになる）
-    int ujp_counter = obj.size();
+    int ujp_counter = int(obj.size());
+
     // 関係式の解析
     relational_expression();
+
+    // CJPを追加しておくが，オペランドは後で埋める
+    obj.push_back(Command(CJP, nullopt));
+
+    // 後から参照するためにCJPの挿入位置を保存しておく
+    int cjp_counter = int(obj.size()) - 1;
 
     // DOの解析
     str = "DO";
@@ -232,12 +239,11 @@ bool Compiler::parse_while_do(void) {
     }
     skip(); // WHILE文のDOの後に空白または改行が複数ある場合の処理
 
-    // 関係式の解析後時点のプログラムカウンタの保存（CJPの挿入先になる）
-    int cjp_counter = obj.size();
+    // 一つ目の文の解析
+    statement();
 
     str = "ENDWHILE";
     len = str.length();
-    statement();
     for(;;) {
         if (*cursor == ';') {
             cursor++;
@@ -249,10 +255,11 @@ bool Compiler::parse_while_do(void) {
         }
         statement();
     }
+
     obj.push_back(Command(UJP, ujp_counter));   // [UJP 関係式の解析前のプログラムカウンタ]がobjに追加される
 
-    // [CJP WHILE文終了直後のプログラムカウンタ]がobjのcjp_counterの部分に挿入される
-    obj.insert(obj.begin()+cjp_counter, Command(CJP, obj.size()+1));
+    // CJPのオペランドを今のプログラムカウンタで埋める
+    obj[cjp_counter].set_operand(obj.size());
 
     return true;
 }
@@ -394,10 +401,10 @@ void Compiler::syntax_error(string message) {
 // 結果の表示
 void Compiler::print_result(void) {
     for (auto i : obj) {
-        if (i.operand.has_value()) {
-            cout << Command::mnemonic2string_map[i.mnemonic] << ' ' << i.operand.value() << endl;
+        if (i.get_operand().has_value()) {
+            cout << Command::mnemonic2string_map[i.get_mnemonic()] << ' ' << i.get_operand().value() << endl;
         } else {
-            cout << Command::mnemonic2string_map[i.mnemonic] << endl;
+            cout << Command::mnemonic2string_map[i.get_mnemonic()] << endl;
         }
     }
 }
@@ -410,10 +417,10 @@ void Compiler::output_file(string filename) {
     if (file.is_open()) {   // ファイルが正常に開かれた場合
         // 結果の出力
         for (auto i : obj) {
-            if (i.operand.has_value()) {
-                file << Command::mnemonic2string_map[i.mnemonic] << ' ' << i.operand.value() << endl;
+            if (i.get_operand().has_value()) {
+                file << Command::mnemonic2string_map[i.get_mnemonic()] << ' ' << i.get_operand().value() << endl;
             } else {
-                file << Command::mnemonic2string_map[i.mnemonic] << endl;
+                file << Command::mnemonic2string_map[i.get_mnemonic()] << endl;
             }
         }
 
@@ -424,4 +431,9 @@ void Compiler::output_file(string filename) {
         cerr << "ファイルを開けませんでした。" << endl;
         exit(1);
     }
+}
+
+// objのgetter
+vector<Command> Compiler::get_obj(void) {
+    return obj;
 }

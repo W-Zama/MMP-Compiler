@@ -1,42 +1,106 @@
-/**
-*  programmer: Zama
-*  created: 04.11.2023 12:15:59
-**/
+#include <iostream>
 
-#include <bits/stdc++.h>
+#include "vm.hpp"
+
 using namespace std;
 
-#if __has_include(<atcoder/all>)
-#include <atcoder/all>
-using namespace atcoder;
-#endif
+VM::VM(vector<Command> obj) {
+    this->obj = obj;
+}
 
-#define OVERLOAD_REP(_1, _2, _3, name, ...) name
-#define REP1(i, n) for (auto i = std::decay_t<decltype(n)>{}; (i) != (n); ++(i))
-#define REP2(i, l, r) for (auto i = (l); (i) != (r); ++(i))
-#define rep(...) OVERLOAD_REP(__VA_ARGS__, REP2, REP1)(__VA_ARGS__)
-#define all(...) std::begin(__VA_ARGS__), std::end(__VA_ARGS__)
-#define rall(...) std::rbegin(__VA_ARGS__), std::rend(__VA_ARGS__)
-using ull = unsigned long long;
-using ll = long long;
-using vi = vector<int>;
-using vl = vector<long>;
-using vll = vector<long long>;
-using vvi = vector<vi>;
-using vvl = vector<vl>;
-using vvll = vector<vll>;
-using vs = vector<string>;
-using pii = pair<int, int>;
-#define YESNO(bool) if(bool){cout<<"YES"<<endl;}else{cout<<"NO"<<endl;}
-#define yesno(bool) if(bool){cout<<"yes"<<endl;}else{cout<<"no"<<endl;}
-#define YesNo(bool) if(bool){cout<<"Yes"<<endl;}else{cout<<"No"<<endl;}
-template<class T> inline bool chmax(T& a, T b) { if (a < b) { a = b; return 1; } return 0; }
-template<class T> inline bool chmin(T& a, T b) { if (a > b) { a = b; return 1; } return 0; }
+void VM::run(void) {
+    for (auto it = obj.begin(); it < obj.end();) {
+    // itのインクリメントはCJP，UDPの時にエスケープするために，for文の最後に行う
 
-int main()
-{
-    int N;
-    cin >> N;
+        // ニモニックに応じた処理
+        Mnemonic mnemonic = it->get_mnemonic();
+        if (mnemonic == GET) {
+            string input_string;
+            int input_num;
+            cin >> input_string;
+            try {
+                input_num = stoi(input_string);
+            } catch (const invalid_argument& e) {
+                cerr << "正常な数値を入力してください．" << endl;
+                exit(1);
+            } catch (const out_of_range& e) {
+                cerr << "入力された数値が大きすぎます．" << endl;
+                exit(1);
+            }
+            if (input_num < 0) {
+                cerr << "非負の整数を入力してください．";
+                exit(1);
+            }
+            // stoi()は入力が小数の場合でも例外を投げないので，小数点があるかどうかを確認する
+            if (input_string.find('.') != string::npos) {
+                cerr << "整数を入力してください．" << endl;
+                exit(1);
+            }
+            memory[it->get_operand().value()] = input_num;
+        } else if (mnemonic == PUT) {
+            cout << memory[it->get_operand().value()] << endl;
+        } else if (mnemonic == LOD) {
+            stk.push(memory[it->get_operand().value()]);
+        } else if (mnemonic == LDC) {
+            stk.push(it->get_operand().value());
+        } else if (mnemonic == STR) {
+            int value = stk.top();
+            stk.pop();
+            memory[it->get_operand().value()] = value;
+        } else if (mnemonic == ADD) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(value2 + value1);
+        } else if (mnemonic == SUB) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(value2 - value1);
+        } else if (mnemonic == MLT) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(value2 * value1);
+        } else if (mnemonic == DIV) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(value2 / value1);
+        } else if (mnemonic == EQL) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(value2 == value1);
+        } else if (mnemonic == GRT) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(value2 > value1);
+        } else if (mnemonic == LET) {
+            int value1 = stk.top();
+            stk.pop();
+            int value2 = stk.top();
+            stk.pop();
+            stk.push(int(value2 < value1));
+        } else if (mnemonic == CJP) {
+            int value = stk.top();
+            stk.pop();
+            if (value == 0) {
+                it = obj.begin() + it->get_operand().value();
+                continue;   // インクリメントをエスケープ
+            }
+        } else if (mnemonic == UJP) {
+            it = obj.begin() + it->get_operand().value();
+            continue;   // インクリメントをエスケープ
+        }
 
-    return 0;
+        ++it;
+    }
 }
