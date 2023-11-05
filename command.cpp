@@ -2,8 +2,29 @@
 
 using namespace std;
 
+// コンストラクタ
 Command::Command(Mnemonic mnemonic, optional<int> operand) {
     this->mnemonic = mnemonic;
+    this->operand = operand;
+}
+
+// ニモニックのゲッタ
+Mnemonic Command::get_mnemonic(void) {
+    return mnemonic;
+}
+
+// ニモニックのセッタ
+void Command::set_mnemonic(Mnemonic mnemonic) {
+    this->mnemonic = mnemonic;
+}
+
+// オペランドのゲッタ
+optional<int> Command::get_operand(void) {
+    return operand;
+}
+
+// オペランドのセッタ
+void Command::set_operand(optional<int> operand) {
     this->operand = operand;
 }
 
