@@ -1,1 +1,0 @@
-g++ -o example_vm example_vm.cpp compiler.cpp command.cpp vm.cpp && ./example_vm

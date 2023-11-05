@@ -1,9 +1,12 @@
 #include "compiler.hpp"
+#include "vm.hpp"
 
 using namespace std;
 
 int main()
 {
+    /* コンパイル */
+
     // インスタンス生成
     Compiler compiler;
 
@@ -21,7 +24,18 @@ int main()
     compiler.print_result();
 
     // ファイルに結果を出力
-    // compiler.output_file(filename + ".obj");
+    compiler.output_file(filename + ".obj");
+
+    /* 仮想マシンで実行 */
+
+    // オブジェクトファイルを取得
+    vector<Command> obj = compiler.get_obj();
+
+    // 仮想マシンのインスタンス生成
+    VM vm(compiler.get_obj());
+
+    // オブジェクトファイルを実行
+    vm.run();
 
     return 0;
 }

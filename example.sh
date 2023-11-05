@@ -1,1 +1,1 @@
-g++ -o example example.cpp compiler.cpp command.cpp && ./example
+g++ -o example example.cpp compiler.cpp command.cpp vm.cpp && ./example
