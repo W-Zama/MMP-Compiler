@@ -1,7 +1,7 @@
 # Mini-Mini-Pascal Compiler
 作成者： **Wataru Zama**
 
-## 実行方法（Compilerクラスを直接使用して，c++のファイル上で実行する）
+## 実行方法（Compilerクラスを直接使用して，C++のファイル上で実行する）
 ### インスタンス生成
 `Compiler`クラスのインスタンスを生成する．
 ```cpp
