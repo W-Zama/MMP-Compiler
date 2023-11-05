@@ -1,16 +1,16 @@
 # Mini-Mini-Pascal Compiler
 作成者： **Wataru Zama**
 
-## 実行方法（Compilerクラスを直接使用して，C++のファイル上で実行する）
+## コンパイル方法1（`Compiler`クラスを直接使用して，C++のファイル上で実行する）
 ### インスタンス生成
 `Compiler`クラスのインスタンスを生成する．
 ```cpp
 // インスタンス生成
 Compiler compiler;
 ```
+
 ### コンパイル対象のプログラムをセットする．
 文字列を直接セットする場合は`Compiler::set_program_string`関数を使用する．
-
 ```cpp
 // プログラムの文字列をセットする
 compiler.set_program_string("A:=0.");
@@ -20,8 +20,9 @@ compiler.set_program_string("A:=0.");
 // ファイル名をセットする
 compiler.set_program_file("sample.pas");
 ```
+
 ### コンパイルの実行
-Compiler::compile関数を使ってコンパイルする．
+`Compiler::compile`関数を使ってコンパイルする．
 ```cpp
 // コンパイル
 compiler.compile();
@@ -39,7 +40,7 @@ compiler.print_result();
 compiler.output_file("sample.obj");
 ```
 
-## 実行方法（コンパイラの実行ファイル`mmpc`を使用する）
+## コンパイル方法2（コンパイラの実行ファイル`mmpc`を使用する）
 ### 実行コマンド
 以下は`mmpc`が存在するまたはパスが通っているディレクトリで実行した例です．オプションは必須で，ファイルパスは複数指定できます．ファイルは拡張子を含める必要があります．
 ```terminal
@@ -72,8 +73,11 @@ mmpc [オプション（必須）] [ファイルのパス1 ファイルのパス
 - **mmpc**: `mmpc(mini-mini pascal compiler)の実行ファイル`
 - **mmpc.cpp**: `mmpc実行ファイルのソースファイル`
 - **mmpc.sh**: `mmpc.cppのコンパイル用のシェルスクリプト`
+- **vm.cpp**: `VMクラスのソースファイル`
+- **vm.hpp**: `VMクラスのヘッダファイル`
 
 ## 誤り処理一覧
+### `Compiler`クラス
 | 誤り内容 | メッセージ |
 |:----:|:----------:|
 | 文（statement）の末尾が`;`または`.`でない． | `文の末尾が正しく認識されません．` |
@@ -93,9 +97,8 @@ mmpc [オプション（必須）] [ファイルのパス1 ファイルのパス
 | 符号なし定数が2147483647より大きい<br>(符号なし定数はプログラム内ではint型で格納されているためこの範囲)  | `定数が大きすぎます．` |
 | カーソルがプログラムの文字列の末尾（ヌルポインタ）を指している状態でエラー | `プログラムの終わりが正しくありません．` |
 
-## 誤り表示
 誤りが検出された場合，以下の画像のようにエラーメッセージとエラー該当箇所が赤背景になった文字列が表示されます．
 
 <br>
-<img src="https://github.com/W-Zama/figure/blob/main/README_images/mmpascal_compiler/error_display.png" alt="誤り表示" width=60%>
+<img src="https://github.com/W-Zama/figure/blob/main/README_images/mmpascal_compiler/error_display.png" alt="誤り表示" width=50%>
 <br>
