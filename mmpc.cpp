@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
         if (dot_index != string::npos) {
             basename = filename.substr(0, dot_index); // ドットより前の部分
         } else {
-            command_error("拡張子付きファイルを指定してください");
+            command_error("拡張子付きファイルを指定してください．");
         }
 
         // インスタンス生成
