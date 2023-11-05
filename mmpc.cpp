@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
         if (i == 1) {
             if (filename == "-c") { // -cオプションの場合
-                output_to_console = true;   // コンソールに出力する
+                output_to_console = true;   // ターミナルに出力する
                 continue;
             } else if (filename == "-f") {  // -fオプションの場合
                 output_to_file = true;  // ファイルに出力する
@@ -35,14 +35,14 @@ int main(int argc, char* argv[])
             } else if (filename == "-cf" || filename == "-fc") {    // -fcまたは-cfオプションの場合
                 // 両方に出力する
                 output_to_file = true;    // ファイルに出力する
-                output_to_console = true;    // コンソールに出力する
+                output_to_console = true;    // ターミナルに出力する
             } else if (filename == "-h" || filename == "--help") {  // -hまたは--helpオプションの場合
                 cout << "mmpc [オプション（必須）] [ファイルのパス1 ファイルのパス2, ...] の形式で実行してください．" << endl;
                 cout << endl;
                 cout << "オプション一覧" << endl;
-                cout << "-c: コンパイル結果をコンソールに出力する" << endl;
+                cout << "-c: コンパイル結果をターミナルに出力する" << endl;
                 cout << "-f: コンパイル結果をファイルに出力する" << endl;
-                cout << "-cfまたは-fc: コンパイル結果をコンソールとファイルに出力する" << endl;
+                cout << "-cfまたは-fc: コンパイル結果をターミナルとファイルに出力する" << endl;
                 cout << "-hまたは--help: ヘルプを表示する" << endl;
                 cout << endl;
                 cout << "また，ファイルのパスには拡張子を含めてください．" << endl;
