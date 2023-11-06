@@ -1,8 +1,12 @@
-READ(N);
-A := 0;
-B := 1;
-WHILE A < N DO
-    A := A + B;
-    B := B + 1
-ENDWHILE;
-WRITE(A).
+A := 10;
+I := 1;
+WHILE I < A DO
+    B := 10;
+    J := 1;
+    WHILE J < B DO
+        C := I * J;
+        WRITE(C);
+        J := J + 1
+    ENDWHILE;
+    I := I + 1
+ENDWHILE.
