@@ -80,6 +80,74 @@ VM vm(compiler.get_obj());
 vm.run();
 ```
 
+## コンパイルと実行の例
+### sample1
+#### ソースコード（/sample/sample1.pas）
+```pas
+READ(A);
+A:= A+10;
+WRITE(A).
+```
+
+#### コンパイル結果（オブジェクトファイル，/sample/sample1.obj）
+```
+GET 0
+LOD 0
+LDC 10
+ADD
+STR 0
+PUT 0
+```
+
+#### 実行結果
+1を入力した場合．
+```terminal
+11
+```
+
+### sample2
+#### ソースコード（/sample/sample2.pas）
+```pas
+READ(L);
+A:= 0; K:= 1;
+WHILE K < L+1 DO
+  A:= A+K;
+  K:= K+1
+ENDWHILE;
+WRITE(A).
+```
+
+#### コンパイル結果（オブジェクトファイル，/sample/sample2.obj）
+```
+GET 11
+LDC 0
+STR 0
+LDC 1
+STR 10
+LOD 10
+LOD 11
+LDC 1
+ADD
+LET
+CJP 20
+LOD 0
+LOD 10
+ADD
+STR 0
+LOD 10
+LDC 1
+ADD
+STR 10
+UJP 5
+PUT 0
+```
+
+#### 実行結果
+10を入力した場合．
+```terminal
+55
+```
+
 ## ディレクトリ構成
 - **sample/**: サンプルプログラムのディレクトリ
     - **sample1.pas**: サンプルプログラム1
