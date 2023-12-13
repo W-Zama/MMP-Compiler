@@ -14,7 +14,7 @@ int main()
     // compiler.set_program_string("A:=0.");
 
     // ファイル名をセットする
-    string filename = "sample/sample2";
+    string filename = "sample/sample1";
     compiler.set_program_file(filename + ".pas");
 
     // コンパイル
@@ -24,7 +24,7 @@ int main()
     compiler.print_result();
 
     // ファイルに結果を出力
-    compiler.output_file(filename + ".obj");
+    // compiler.output_file(filename + ".obj");
 
     /* 仮想マシンで実行 */
 
