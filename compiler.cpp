@@ -75,6 +75,8 @@ void Compiler::statement(void) {
         ;
     } else if (parse_while_do()) {
         ;
+    } else if (parse_if_then()) {
+        ;
     } else if (*cursor == ';' || *cursor == '.') {
         ;
     } else {
@@ -257,6 +259,71 @@ bool Compiler::parse_while_do(void) {
     }
 
     obj.push_back(Command(UJP, ujp_counter));   // [UJP 関係式の解析前のプログラムカウンタ]がobjに追加される
+
+    // CJPのオペランドを今のプログラムカウンタで埋める
+    obj[cjp_counter].set_operand(obj.size());
+
+    return true;
+}
+
+bool Compiler::parse_if_then(void) {
+    string str = "IF";
+    int len = str.length();
+
+    // カーソルの文字がIFと一致するか
+    if (strncmp(cursor, str.c_str(), len) == 0) {
+        cursor += len;  // 一致したら文字数の分だけカーソルを進める
+    } else {
+        return false;
+    }
+    if (*cursor == ' ') {
+        cursor++;
+    } else {
+        syntax_error("IF文の後に空白がありません．");
+    }
+    skip(); // IF文の後に空白が複数ある場合の処理
+
+    // 関係式の解析
+    relational_expression();
+
+    // CJPを追加しておくが，オペランドは後で埋める
+    obj.push_back(Command(CJP, nullopt));
+
+    // 後から参照するためにCJPの挿入位置を保存しておく
+    int cjp_counter = int(obj.size()) - 1;
+
+    // THENの解析
+    str = "THEN";
+    len = str.length();
+    if (strncmp(cursor, str.c_str(), len) == 0) {
+        cursor += len;
+    } else {
+        syntax_error("IF-THEN文のTHENが認識されません．");
+    }
+
+    if (*cursor == ' ' || *cursor == '\n') {
+        cursor++;
+    } else {
+        syntax_error("IF-THEN文のTHENの後に空白または改行がありません．");
+    }
+    skip(); // IF-THEN文のTHENの後に空白または改行が複数ある場合の処理
+
+    // 一つ目の文の解析
+    statement();
+
+    str = "ENDIF";
+    len = str.length();
+    for(;;) {
+        if (*cursor == ';') {
+            cursor++;
+        } else if (strncmp(cursor, str.c_str(), len) == 0) {
+            cursor += len;
+            break;
+        } else {
+            syntax_error("ENDIFが認識されません．");
+        }
+        statement();
+    }
 
     // CJPのオペランドを今のプログラムカウンタで埋める
     obj[cjp_counter].set_operand(obj.size());

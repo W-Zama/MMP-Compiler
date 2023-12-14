@@ -20,6 +20,7 @@ private:
     bool parse_write(void);
     bool parse_assignment(void);
     bool parse_while_do(void);
+    bool parse_if_then(void);
     void relational_expression(void);
     void simple_expression(void);
     void term(void);

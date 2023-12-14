@@ -14,7 +14,7 @@ int main()
     // compiler.set_program_string("A:=0.");
 
     // ファイル名をセットする
-    string filename = "sample/sample1";
+    string filename = "sample/sample8";
     compiler.set_program_file(filename + ".pas");
 
     // コンパイル
