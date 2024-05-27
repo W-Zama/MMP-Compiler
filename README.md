@@ -1,5 +1,7 @@
-# Mini-Mini-Pascal Compiler
+# MMP Compiler
 作成者： **Wataru Zama**
+
+Pascal風の言語であるMMPのコンパイラです．
 
 ## コンパイル方法1（`Compiler`クラスを直接使用して，C++のファイル上で実行する）
 ### インスタンス生成
